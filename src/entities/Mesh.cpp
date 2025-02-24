@@ -104,8 +104,8 @@ Sphere::Sphere(int stacks, int meridans)
 		}
 	}
 
-	vertex_data_size = sizeof(float) * k4;
-	indices_data_size = sizeof(int) * k;
+	vertexDataSize = sizeof(float) * k4;
+	indicesDataSize = sizeof(int) * k;
 
 	glm::vec3 a, b, c, u, v, n;
 	int ai, bi, ci, di;

@@ -7,18 +7,17 @@
 class Light
 {
 public:
-	Light(glm::vec3 pos, glm::vec3 col, float amb);
+	Light(glm::vec3 POS, glm::vec3 COL, float AMB);
 	~Light() = default;
 
-	glm::vec3* get_position(){return &position;}
-	glm::vec3* get_color(){return &color;}
-	float get_ambiant(){return ambiant;}
+	glm::vec3* GetPosition(){return &position;}
+	glm::vec3* GetColor(){return &color;}
+	float GetAmbiant(){return ambiant;}
 
 private:
+	float ambiant;
 	glm::vec3 position;
 	glm::vec3 color;
-	float ambiant;
-
 };
 
 #endif

@@ -1,5 +1,5 @@
 # Nom de l'exécutable
-TARGET = ./bin/prog
+TARGET = ./bin/skylab
 
 # Répertoires
 SRC_DIR = src

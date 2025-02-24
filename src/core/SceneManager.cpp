@@ -2,62 +2,62 @@
 
 void SceneManager::Init(int w, int h)
 {
-    scr_width = w;
-    scr_height = h;
+	scr_width = w;
+	scr_height = h;
 }
 
 void SceneManager::ChangeScene(ScenesName name)
 {
-    std::unique_ptr<Scene> newScene;
-    if (currentScene)
-    {
-        currentScene->Destroy();
-    }
+	std::unique_ptr<Scene> newScene;
+	if (currentScene)
+	{
+		currentScene->Destroy();
+	}
 
-    if (name == menu)
-    {
-        newScene = std::make_unique<MenuScene>(this);
-    }
-    else if (name == space)
-    {
-        newScene = std::make_unique<GameScene>(this);
-    }
+	if (name == MENU)
+	{
+		newScene = std::make_unique<SpaceScene>(this);
+	}
+	else if (name == SPACE)
+	{
+		newScene = std::make_unique<GameScene>(this);
+	}
 
-    currentScene = std::move(newScene);
-    if (currentScene)
-    {
-        currentScene->Init();
-    }
+	currentScene = std::move(newScene);
+	if (currentScene)
+	{
+		currentScene->Init();
+	}
 }
 
 void SceneManager::ProcessInput(const InputManager& input)
 {
-    if (currentScene)
-    {
-        currentScene->ProcessInput(input);
-    }
+	if (currentScene)
+	{
+		currentScene->ProcessInput(input);
+	}
 }
 
 void SceneManager::Update(float deltaTime)
 {
-    if (currentScene)
-    {
-        currentScene->Update(deltaTime);
-    }
+	if (currentScene)
+	{
+		currentScene->Update(deltaTime);
+	}
 }
 
 void SceneManager::Render()
 {
-    if (currentScene)
-    {
-        currentScene->Render();
-    }
+	if (currentScene)
+	{
+		currentScene->Render();
+	}
 }
 
 void SceneManager::Destroy()
 {
-    if (currentScene)
-    {
-        currentScene->Destroy();
-    }
+	if (currentScene)
+	{
+		currentScene->Destroy();
+	}
 }

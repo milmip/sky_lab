@@ -1,9 +1,9 @@
 #include "graphics/Light.hpp"
 
-Light::Light(glm::vec3 pos, glm::vec3 col, float amb):
-position(pos),
-color(col),
-ambiant(amb)
+Light::Light(glm::vec3 POS, glm::vec3 COL, float AMB):
+position(POS),
+color(COL),
+ambiant(AMB)
 {
 
 }

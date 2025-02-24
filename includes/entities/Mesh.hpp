@@ -4,7 +4,7 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 
-#include "entities/object.hpp"
+#include "entities/Object.hpp"
 
 #include <cmath>
 
@@ -15,23 +15,23 @@ public:
 	~Sphere();
 
 private:
-	int vertex_data_size;
-	int indices_data_size;
+	int vertexDataSize;
+	int indicesDataSize;
 
-	float *vertex;
-	unsigned int *indices;
+	float* vertex;
+	unsigned int* indices;
 
-	float* get_vertex_data(){return vertex;}
-	int get_vertex_data_size(){return vertex_data_size;}
+	float* getVertexData(){return vertex;}
+	int getVertexDataSize(){return vertexDataSize;}
 
-	unsigned int* get_indices_data(){return indices;}
-	int get_indices_data_size(){return indices_data_size;}
+	unsigned int* getIndicesData(){return indices;}
+	int getIndicesDataSize(){return indicesDataSize;}
 };
 
 
 class Square : public Object
 {
-	public:
+public:
 	Square():
 	vertex{ 0.5f,  0.5f,  0.0f, 0.0f, 0.0f,
 		   -0.5f,  0.5f,  0.0f, 1.0f, 0.0f,
@@ -46,11 +46,11 @@ private:
 	float vertex[20];
 	unsigned int indices[6];
 
-	float* get_vertex_data(){return vertex;}
-	int get_vertex_data_size(){return sizeof(vertex);}
+	float* getVertexData(){return vertex;}
+	int getVertexDataSize(){return sizeof(vertex);}
 
-	unsigned int* get_indices_data(){return indices;}
-	int get_indices_data_size(){return sizeof(indices);}
+	unsigned int* getIndicesData(){return indices;}
+	int getIndicesDataSize(){return sizeof(indices);}
 };
 
 class Cube : public Object
@@ -90,11 +90,11 @@ private:
 	float vertex[24];
 	unsigned int indices[36];
 
-	float* get_vertex_data(){return vertex;}
-	int get_vertex_data_size(){return sizeof(vertex);}
+	float* getVertexData(){return vertex;}
+	int getVertexDataSize(){return sizeof(vertex);}
 
-	unsigned int* get_indices_data(){return indices;}
-	int get_indices_data_size(){return sizeof(indices);}
+	unsigned int* getIndicesData(){return indices;}
+	int getIndicesDataSize(){return sizeof(indices);}
 };
 
 class Triangle : public Object
@@ -130,11 +130,11 @@ private:
 	float vertex[30];
 	unsigned int indices[24];
 
-	float* get_vertex_data(){return vertex;}
-	int get_vertex_data_size(){return sizeof(vertex);}
+	float* getVertexData(){return vertex;}
+	int getVertexDataSize(){return sizeof(vertex);}
 
-	unsigned int* get_indices_data(){return indices;}
-	int get_indices_data_size(){return sizeof(indices);}
+	unsigned int* getIndicesData(){return indices;}
+	int getIndicesDataSize(){return sizeof(indices);}
 };
 
 #endif

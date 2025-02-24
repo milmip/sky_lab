@@ -38,17 +38,16 @@ void InputManager::GetMousePosition(double& x, double& y) const
 	y = mouseY;
 }
 
-void InputManager::GetMouseOffset(double* x_off, double* y_off) const
+void InputManager::GetMouseOffset(double* xOff, double* yOff) const
 {
 	if (mouseX_off > 100 || mouseY_off > 100)
 	{
-		*x_off = 0.0;
-		*y_off = 0.0;
+		*xOff = 0.0;
+		*yOff = 0.0;
 	}
 	else
 	{
-		*x_off = mouseX_off;
-		*y_off = mouseY_off;
+		*xOff = mouseX_off;
+		*yOff = mouseY_off;
 	}
-	
 }

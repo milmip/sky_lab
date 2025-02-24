@@ -7,32 +7,30 @@
 #include "core/SceneManager.hpp"
 #include "core/InputManager.hpp"
 
-//#include "scenes/MenuScene.hpp"
-
 #include <iostream>
 
-class Application 
+class Application
 {
 public:
-    Application(const char* title);
-    ~Application();
+	Application(const char* TITLE);
+	~Application();
 
-    void Run();
+	void Run();
 
 private:
-    void Init();
-    void ProcessInput();
-    void Update(float deltaTime);
-    void Render();
+	int width, height;
+	float lastFrameTime;
+	const char* title;
 
-    int width, height;
-    const char* title;
-    GLFWwindow* window;
+	GLFWwindow* window;
 
-    SceneManager sceneManager;
-    InputManager inputManager;
+	SceneManager sceneManager;
+	InputManager inputManager;
 
-    float lastFrameTime;
+	void init();
+	void processInput();
+	void update(float deltaTime);
+	void render();
 };
 
 #endif
