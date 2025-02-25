@@ -1,5 +1,5 @@
-#ifndef MENUSCENE
-#define MENUSCENE
+#ifndef SPACESCENE
+#define SPACESCENE
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
