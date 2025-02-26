@@ -12,8 +12,8 @@ CXX = g++
 
 # Options de compilation
 CFLAGS = -Wall -Wextra -I$(INC_DIR)
-CXXFLAGS = -Wall -Wextra -std=c++17 -I$(INC_DIR)
-LDFLAGS = -lfmt -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl
+CXXFLAGS = -Wall -Wextra -std=c++17 -I$(INC_DIR) `pkg-config --cflags freetype2`
+LDFLAGS = -lfmt -lglfw -lGL -lX11 -lpthread -lXrandr -lXi -ldl -lfreetype
 
 # Recherche récursive des fichiers sources
 SRC_C = $(shell find $(SRC_DIR) -type f -name "*.c")
@@ -38,7 +38,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 # Compilation des fichiers .cpp
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	mkdir -p $(dir $@)
-	$(CXX) $(CFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Création du dossier obj/ s'il n'existe pas
 $(OBJ_DIR):

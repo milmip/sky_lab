@@ -3,10 +3,13 @@
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 #include "core/SceneManager.hpp"
 #include "scenes/Scene.hpp"
 
+//#include "entities/Termini.hpp"
 #include "entities/Mesh.hpp"
 
 #include "graphics/Camera.hpp"
@@ -35,10 +38,13 @@ private:
 							glm::vec3(1.0f, 1.0f, 1.0f),
 							0.2f);
 
+	Shader glyphShader;
+	//Termini termini = Termini(200, 200, 24, "/usr/share/fonts/truetype/fonts-deva-extra/chandas1-2.ttf");
+
 	Sphere earth = Sphere(100, 100);
 	Shader simple_shader;
 
-	glm::mat4 proj_m;
+	glm::mat4 projMatrix;
 };
 
 #endif

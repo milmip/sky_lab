@@ -3,7 +3,7 @@
 SpaceScene::SpaceScene(SceneManager* MANAGER):
 sceneManager(MANAGER)
 {
-	proj_m = glm::perspective(glm::radians(45.0f),
+	projMatrix = glm::perspective(glm::radians(45.0f),
 							(float)sceneManager->scr_width / (float)sceneManager->scr_height,
 							0.001f, 100.0f);
 }
@@ -11,12 +11,19 @@ sceneManager(MANAGER)
 void SpaceScene::Init()
 {
 	std::cout << "SpaceScene initialisée !" << std::endl;
+
+	glyphShader.Init("shaders/glyphVert.glsl", "shaders/glyphFrag.glsl");
+	//termini.SetShader(glyphShader.ID);
+
 	simple_shader.Init("shaders/vert1.glsl", "shaders/frag1.glsl");
 	
 	const char* texts_loc[] = {/*"ressources/textures/8k_earth_clouds.jpg", */"ressources/textures/8k_earth_daymap.jpg"};
 	unsigned int n_texts = 1;
 
+	//termini.SetProjM(glm::ortho(0.0f, 800.0f, 0.0f, 600.0f));
+
 	earth.Init(simple_shader.ID, n_texts, texts_loc);
+
 	
 }
 
@@ -83,15 +90,18 @@ void SpaceScene::Render()
 	Shader::setFloat(simple_shader.ID, "ambiant", sunlight.GetAmbiant());
 
 	Shader::setMat4(simple_shader.ID, "view", cam.GetViewMatrix());
-	Shader::setMat4(simple_shader.ID, "projection", &proj_m);
+	Shader::setMat4(simple_shader.ID, "projection", &projMatrix);
 
 	Shader::setMat4(earth.GetShader(), "model", earth.GetModelMatrix());
 	earth.Bind();
 	earth.Draw();
+
+	//termini.Render();
 }
 
 void SpaceScene::Destroy()
 {
 	std::cout << "SpaceScene détruite !" << std::endl;
 	glDeleteProgram(simple_shader.ID);
+	glDeleteProgram(glyphShader.ID)
 }
