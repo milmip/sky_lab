@@ -1,53 +1,22 @@
 #ifndef TERMINI
 #define TERMINI
 
-#include <glad/glad.h>
 #include <glm/glm.hpp>
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
-#include "graphics/Shader.hpp"
-
-#include <iostream>
-#include <string>
-#include <map>
-
-struct Character
-{
-	unsigned int TextureID;
-	unsigned int Advance;
-
-	glm::ivec2 GlyphSize;
-	glm::ivec2 Bearing;
-};
+//#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 class Termini
 {
 public:
-	Termini(unsigned int WIDTH,
-			unsigned int HEIGHT,
-			unsigned int FSIZE,
-			const char* fontPath);
-	~Termini();
+	Termini() = default;
+	~Termini() = default;
 
-	void Render();
-
-	void SetShader(unsigned int id){shader = id;}
-	void SetProjM(glm::mat4 proj){projMatrix = proj;}
+	void Init(unsigned int SHADER);
+	void Draw();
 
 private:
-	unsigned int vao, vbo, shader;
-	unsigned int width, height, fsize;
-
-	std::map<char, Character> characters;
-
-	glm::mat4 projMatrix;
-
-	FT_Library lib;
-	FT_Face face;
-
-	int loadGlyphsTexture();
-	void renderText(std::string text, float x, float y, glm::vec3 color);
+	unsigned int shader;
+	glm::mat4 projMat = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
+	
 };
-
 #endif
