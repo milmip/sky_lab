@@ -63,7 +63,7 @@ void Application::init()
 	
 	glEnable(GL_DEPTH_TEST);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-	//glViewport(0, 0, width, height);
+	glViewport(0, 0, width, height);
 	sceneManager.Init(width, height);
 	sceneManager.ChangeScene(MENU);
 }
