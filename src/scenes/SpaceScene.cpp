@@ -85,12 +85,8 @@ void SpaceScene::Render()
 	setUniformEarth();
 	earth.Bind();
 	earth.Draw();
-
-	//glUseProgram(0);
 	
 	termini.Draw();
-	
-	//termini.Render();
 }
 
 void SpaceScene::Destroy()
