@@ -8,6 +8,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include <graphics/Shader.hpp>
+
 #include <iostream>
 #include <map>
 #include <string>
@@ -25,16 +27,15 @@ public:
 	Termini() = default;
 	~Termini() = default;
 
-	void Init(unsigned int SHADER);
+	void Init(unsigned int shad, const char* font_path, unsigned int width, unsigned int height);
 	void Draw();
 
 private:
-	unsigned int shader;
+	unsigned int vao, vbo, shader;
+	std::map<GLchar, Character> characters;
 
-	std::map<GLchar, Character> Characters;
-	unsigned int VAO, VBO;
-	glm::mat4 glyphProjMatrix = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f);
+	glm::mat4 glyphProjMatrix;
 
-	void RenderText(unsigned int SHADERR, std::string text, float x, float y, float scale, glm::vec3 color);	
+	void RenderText(std::string text, float x, float y, float scale, glm::vec3 color);	
 };
 #endif

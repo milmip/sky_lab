@@ -3,9 +3,6 @@
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
-//#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 
 #include "core/SceneManager.hpp"
 #include "scenes/Scene.hpp"
@@ -19,8 +16,6 @@
 
 #include <iostream>
 #include <cmath>
-#include <map>
-#include <string>
 
 class SpaceScene : public Scene
 {
@@ -36,23 +31,19 @@ public:
 
 private:
 	SceneManager* sceneManager;
+
 	Camera cam = Camera();
 	Light sunlight = Light(glm::vec3(2.0f, 0.0f, 0.0f), 
 							glm::vec3(1.0f, 1.0f, 1.0f),
 							0.2f);
-
-	Shader glyphShader;
-	Termini termini;
-
 	Sphere earth = Sphere(100, 100);
 	Shader simple_shader;
-
 	glm::mat4 projMatrix;
 
-
+	Termini termini;
+	Shader glyphShader;
 
 	void setUniformEarth();
-
 };
 
 #endif

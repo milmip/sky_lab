@@ -4,31 +4,25 @@ SpaceScene::SpaceScene(SceneManager* MANAGER):
 sceneManager(MANAGER)
 {
 	projMatrix = glm::perspective(glm::radians(45.0f),
-							(float)sceneManager->scr_width / (float)sceneManager->scr_height,
-							0.001f, 100.0f);
+								 (float)sceneManager->scr_width / (float)sceneManager->scr_height,
+								 0.001f, 100.0f);
 }
 
 void SpaceScene::Init()
 {
 	std::cout << "SpaceScene initialisée !" << std::endl;
 
+	//Termini
 	glyphShader.Init("shaders/glyphVert.glsl", "shaders/glyphFrag.glsl");
-	termini.Init(glyphShader.ID);
+	termini.Init(glyphShader.ID,
+				 "/usr/share/fonts/truetype/fonts-deva-extra/chandas1-2.ttf",
+				 sceneManager->scr_width, sceneManager->scr_height);
 
+	//Earth
 	simple_shader.Init("shaders/vert1.glsl", "shaders/frag1.glsl");
-	
 	const char* texts_loc[] = {/*"ressources/textures/8k_earth_clouds.jpg", */"ressources/textures/8k_earth_daymap.jpg"};
 	unsigned int n_texts = 1;
-
-	//termini.SetProjM(glm::ortho(0.0f, 800.0f, 0.0f, 600.0f));
-
 	earth.Init(simple_shader.ID, n_texts, texts_loc);
-
-
-
-	//glyphProjMatrix = glm::ortho(0.0f, static_cast<float>(800), 0.0f, static_cast<float>(600));
-	
-	
 }
 
 void SpaceScene::ProcessInput(const InputManager& input)
