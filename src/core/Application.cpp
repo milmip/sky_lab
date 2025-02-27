@@ -62,6 +62,8 @@ void Application::init()
 	}
 	
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glViewport(0, 0, width, height);
 	sceneManager.Init(width, height);
@@ -88,6 +90,7 @@ void Application::update(float deltaTime)
 
 void Application::render()
 {
+	//glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	sceneManager.Render();
 	glfwSwapBuffers(window);

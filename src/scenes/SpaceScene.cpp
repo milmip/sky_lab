@@ -3,21 +3,26 @@
 SpaceScene::SpaceScene(SceneManager* MANAGER):
 sceneManager(MANAGER)
 {
-	proj_m = glm::perspective(glm::radians(45.0f),
-							(float)sceneManager->scr_width / (float)sceneManager->scr_height,
-							0.001f, 100.0f);
+	projMatrix = glm::perspective(glm::radians(45.0f),
+								 (float)sceneManager->scr_width / (float)sceneManager->scr_height,
+								 0.001f, 100.0f);
 }
 
 void SpaceScene::Init()
 {
 	std::cout << "SpaceScene initialisée !" << std::endl;
+
+	//Termini
+	glyphShader.Init("shaders/glyphVert.glsl", "shaders/glyphFrag.glsl");
+	termini.Init(glyphShader.ID,
+				 "/usr/share/fonts/truetype/fonts-deva-extra/chandas1-2.ttf",
+				 sceneManager->scr_width, sceneManager->scr_height);
+
+	//Earth
 	simple_shader.Init("shaders/vert1.glsl", "shaders/frag1.glsl");
-	
 	const char* texts_loc[] = {/*"ressources/textures/8k_earth_clouds.jpg", */"ressources/textures/8k_earth_daymap.jpg"};
 	unsigned int n_texts = 1;
-
 	earth.Init(simple_shader.ID, n_texts, texts_loc);
-	
 }
 
 void SpaceScene::ProcessInput(const InputManager& input)
@@ -77,21 +82,30 @@ void SpaceScene::Update(float deltaTime)
 
 void SpaceScene::Render()
 {
-	Shader::setVec3(simple_shader.ID, "viewPos", cam.GetPosition());
-	Shader::setVec3(simple_shader.ID, "light_pos", sunlight.GetPosition());
-	Shader::setVec3(simple_shader.ID, "light_color", sunlight.GetColor());
-	Shader::setFloat(simple_shader.ID, "ambiant", sunlight.GetAmbiant());
-
-	Shader::setMat4(simple_shader.ID, "view", cam.GetViewMatrix());
-	Shader::setMat4(simple_shader.ID, "projection", &proj_m);
-
-	Shader::setMat4(earth.GetShader(), "model", earth.GetModelMatrix());
+	setUniformEarth();
 	earth.Bind();
 	earth.Draw();
+	
+	termini.Draw();
 }
 
 void SpaceScene::Destroy()
 {
 	std::cout << "SpaceScene détruite !" << std::endl;
 	glDeleteProgram(simple_shader.ID);
+	glDeleteProgram(glyphShader.ID);
+}
+
+void SpaceScene::setUniformEarth()
+{
+	glUseProgram(simple_shader.ID);
+	Shader::setVec3(simple_shader.ID, "viewPos", cam.GetPosition());
+	Shader::setVec3(simple_shader.ID, "light_pos", sunlight.GetPosition());
+	Shader::setVec3(simple_shader.ID, "light_color", sunlight.GetColor());
+	Shader::setFloat(simple_shader.ID, "ambiant", sunlight.GetAmbiant());
+
+	Shader::setMat4(simple_shader.ID, "view", cam.GetViewMatrix());
+	Shader::setMat4(simple_shader.ID, "projection", &projMatrix);
+
+	Shader::setMat4(earth.GetShader(), "model", earth.GetModelMatrix());
 }
