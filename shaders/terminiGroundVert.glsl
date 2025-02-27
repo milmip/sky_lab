@@ -1,9 +1,10 @@
 #version 330 core
-layout (location = 0) in vec3 aPos;
+layout (location = 0) in vec2 aPos;
 
-uniform mat4 projection;
+uniform mat3 upInTheCorner;
 
 void main()
 {
-	gl_Position = projection * vec4(aPos.x, aPos.y, aPos.z, 1.0);
+	vec3 scaledPos = upInTheCorner * vec3(aPos.x, aPos.y, 1.0);
+	gl_Position = vec4(scaledPos.x, scaledPos.y, -0.01, 1.0);
 }

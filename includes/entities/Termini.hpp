@@ -9,6 +9,7 @@
 #include FT_FREETYPE_H
 
 #include <graphics/Shader.hpp>
+#include "entities/Mesh.hpp"
 
 #include <iostream>
 #include <map>
@@ -31,11 +32,16 @@ public:
 	void Draw();
 
 private:
-	unsigned int vao, vbo, shader;
+	unsigned int vao, vbo, shader, scr_width, scr_height;
 	std::map<GLchar, Character> characters;
 
 	glm::mat4 glyphProjMatrix;
 
+	glm::mat3 upInTheCorner;
+	Shader backgroundShader;
+	Square background;
+
 	void RenderText(std::string text, float x, float y, float scale, glm::vec3 color);	
+	void updateBackgroundMatrix(unsigned int wPx, unsigned int hPx);
 };
 #endif

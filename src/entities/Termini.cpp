@@ -2,9 +2,15 @@
 
 void Termini::Init(unsigned int shad, const char* font_path, unsigned int width, unsigned int height)
 {
+	scr_width = width;
+	scr_height = height;
+
 	shader = shad;
 
-	glyphProjMatrix = glm::ortho(0.0f, static_cast<float>(width), 0.0f, static_cast<float>(height));
+	backgroundShader.Init("shaders/terminiGroundVert.glsl", "shaders/terminiGroundFrag.glsl");
+	background.Init(backgroundShader.ID, 0, NULL);
+
+	glyphProjMatrix = glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f);
 
 	glUseProgram(shader);
 	Shader::setMat4(shader, "projection", &glyphProjMatrix);
@@ -76,7 +82,13 @@ void Termini::Init(unsigned int shad, const char* font_path, unsigned int width,
 
 void Termini::Draw()
 {
-	RenderText("This is sample text", 25.0f, 250.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+	RenderText("This is sample text", 25.0f, 250.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+
+	updateBackgroundMatrix(1200, 800);
+	backgroundShader.Use();
+	Shader::setMat3(backgroundShader.ID, "upInTheCorner", &upInTheCorner);
+	background.Bind();
+	background.Draw();
 }
 
 void Termini::RenderText(std::string text, float x, float y, float scale, glm::vec3 color)
@@ -93,17 +105,17 @@ void Termini::RenderText(std::string text, float x, float y, float scale, glm::v
 		Character ch = characters[*c];
 
 		float xpos = x + ch.Bearing.x * scale;
-		float ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
+		float ypos = y + (ch.Size.y - ch.Bearing.y) * scale;
 
 		float w = ch.Size.x * scale;
 		float h = ch.Size.y * scale;
-		float vertices[6][4] = {{ xpos,     ypos + h,   0.0f, 0.0f },
+		float vertices[6][4] = {{ xpos,     ypos - h,   0.0f, 0.0f },
 								{ xpos,     ypos,       0.0f, 1.0f },
 								{ xpos + w, ypos,       1.0f, 1.0f },
 
-								{ xpos,     ypos + h,   0.0f, 0.0f },
+								{ xpos,     ypos - h,   0.0f, 0.0f },
 								{ xpos + w, ypos,       1.0f, 1.0f },
-								{ xpos + w, ypos + h,   1.0f, 0.0f }};
+								{ xpos + w, ypos - h,   1.0f, 0.0f }};
 		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
 
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -115,4 +127,13 @@ void Termini::RenderText(std::string text, float x, float y, float scale, glm::v
 	}
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Termini::updateBackgroundMatrix(unsigned int wPx, unsigned int hPx)
+{
+	float k = static_cast<float>(wPx) / static_cast<float>(scr_width);
+	float m = static_cast<float>(hPx) / static_cast<float>(scr_height);
+	upInTheCorner = glm::mat3(k,    0.0f, 0.0f,
+							  0.0f, m,    0.0f,
+							  k-1.0f, 1.0f-m, 1.0f);
 }

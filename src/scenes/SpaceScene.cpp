@@ -15,7 +15,7 @@ void SpaceScene::Init()
 	//Termini
 	glyphShader.Init("shaders/glyphVert.glsl", "shaders/glyphFrag.glsl");
 	termini.Init(glyphShader.ID,
-				 "/usr/share/fonts/truetype/fonts-deva-extra/chandas1-2.ttf",
+				 "/usr/share/fonts/truetype/downloaded/Consolas.ttf",
 				 sceneManager->scr_width, sceneManager->scr_height);
 
 	//Earth

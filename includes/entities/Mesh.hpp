@@ -41,22 +41,22 @@ class Square : public Object
 {
 public:
 	Square():
-	vertex{ 0.5f,  0.5f,  0.0f, 0.0f, 0.0f,
-		   -0.5f,  0.5f,  0.0f, 1.0f, 0.0f,
-			0.5f, -0.5f,  0.5f, 0.0f, 1.0f,
-		   -0.5f, -0.5f,  0.5f, 1.0f, 1.0f},
+	vertex{ 1.0f,  1.0f,
+		   -1.0f,  1.0f,
+			1.0f, -1.0f,
+		   -1.0f, -1.0f},
 
 	indices{0, 1, 2,
 			1, 2, 3}
 	{}
 
 private:
-	float vertex[20];
+	float vertex[8];
 	unsigned int indices[6];
 
-	int attribPtr[1] = {3};
+	int attribPtr[1] = {2};
 	int nPtr = 1;
-	int attribSize = 3;
+	int attribSize = 2;
 
 	float* getVertexData(){return vertex;}
 	int getVertexDataSize(){return sizeof(vertex);}
