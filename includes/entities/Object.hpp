@@ -41,6 +41,10 @@ private:
 
 	virtual unsigned int* getIndicesData() = 0;
 	virtual int getIndicesDataSize() = 0;
+
+	virtual int* getAttribPtr() = 0;
+	virtual int getNPtr() = 0;
+	virtual int getAttribSize() = 0;
 };
 
 #endif

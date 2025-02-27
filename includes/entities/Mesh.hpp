@@ -21,11 +21,19 @@ private:
 	float* vertex;
 	unsigned int* indices;
 
+	int attribPtr[3] = {3, 3, 2};
+	int nPtr = 3;
+	int attribSize = 8;
+
 	float* getVertexData(){return vertex;}
 	int getVertexDataSize(){return vertexDataSize;}
 
 	unsigned int* getIndicesData(){return indices;}
 	int getIndicesDataSize(){return indicesDataSize;}
+
+	int* getAttribPtr(){return attribPtr;};
+	int getNPtr(){return nPtr;};
+	int getAttribSize(){return attribSize;};
 };
 
 
@@ -46,14 +54,22 @@ private:
 	float vertex[20];
 	unsigned int indices[6];
 
+	int attribPtr[1] = {3};
+	int nPtr = 1;
+	int attribSize = 3;
+
 	float* getVertexData(){return vertex;}
 	int getVertexDataSize(){return sizeof(vertex);}
 
 	unsigned int* getIndicesData(){return indices;}
 	int getIndicesDataSize(){return sizeof(indices);}
+
+	int* getAttribPtr(){return attribPtr;};
+	int getNPtr(){return nPtr;};
+	int getAttribSize(){return attribSize;};
 };
 
-class Cube : public Object
+/*class Cube : public Object
 {
 public:
 	Cube():
@@ -135,6 +151,6 @@ private:
 
 	unsigned int* getIndicesData(){return indices;}
 	int getIndicesDataSize(){return sizeof(indices);}
-};
+};*/
 
 #endif

@@ -22,14 +22,18 @@ void Object::Init(unsigned int SHADERR, unsigned int NBR_TEXT, const char** TEXT
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, getIndicesDataSize(), getIndicesData(), GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
+	int* attribPtr = getAttribPtr();
+    int nPtr = getNPtr();
+    int attribSize = getAttribSize();
+    int acc = 0;
 
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
+    for (int i = 0; i < nPtr; ++i)
+    {
+    	glVertexAttribPointer(i, attribPtr[i], GL_FLOAT, GL_FALSE, attribSize * sizeof(float), (void*)(acc * sizeof(float)));
+		glEnableVertexAttribArray(i);
 
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
+		acc += attribPtr[i];
+    }
 
 	//Texture
 	stbi_set_flip_vertically_on_load(true);
