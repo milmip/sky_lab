@@ -82,7 +82,7 @@ void Termini::Init(unsigned int shad, const char* font_path, unsigned int width,
 
 void Termini::Draw()
 {
-	RenderText("This is sample text", 25.0f, 250.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+	renderText("This is sample text", 25.0f, 250.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
 
 	updateBackgroundMatrix(1200, 800);
 	backgroundShader.Use();
@@ -91,7 +91,12 @@ void Termini::Draw()
 	background.Draw();
 }
 
-void Termini::RenderText(std::string text, float x, float y, float scale, glm::vec3 color)
+void Termini::ProcessInput(const InputManager* input)
+{
+
+}
+
+void Termini::renderText(std::string text, float x, float y, float scale, glm::vec3 color)
 {
 	glUseProgram(shader);
 	Shader::setVec3(shader, "textColor", &color);

@@ -8,14 +8,16 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include <graphics/Shader.hpp>
+#include "graphics/Shader.hpp"
 #include "entities/Mesh.hpp"
+#include "core/InputManager.hpp"
 
 #include <iostream>
 #include <map>
 #include <string>
 
-struct Character {
+struct Character
+{
     unsigned int TextureID; // ID handle of the glyph texture
     glm::ivec2   Size;      // Size of glyph
     glm::ivec2   Bearing;   // Offset from baseline to left/top of glyph
@@ -30,6 +32,7 @@ public:
 
 	void Init(unsigned int shad, const char* font_path, unsigned int width, unsigned int height);
 	void Draw();
+	void ProcessInput(const InputManager* input);
 
 private:
 	unsigned int vao, vbo, shader, scr_width, scr_height;
@@ -41,7 +44,7 @@ private:
 	Shader backgroundShader;
 	Square background;
 
-	void RenderText(std::string text, float x, float y, float scale, glm::vec3 color);	
+	void renderText(std::string text, float x, float y, float scale, glm::vec3 color);	
 	void updateBackgroundMatrix(unsigned int wPx, unsigned int hPx);
 };
 #endif

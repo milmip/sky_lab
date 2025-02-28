@@ -12,6 +12,7 @@ void SpaceScene::Init()
 {
 	std::cout << "SpaceScene initialisée !" << std::endl;
 
+	terminiActived = false;
 	//Termini
 	glyphShader.Init("shaders/glyphVert.glsl", "shaders/glyphFrag.glsl");
 	termini.Init(glyphShader.ID,
@@ -27,44 +28,56 @@ void SpaceScene::Init()
 
 void SpaceScene::ProcessInput(const InputManager& input)
 {
-	if (input.IsKeyPressed(GLFW_KEY_ENTER))
+	/*if (input.IsKeyPressed(GLFW_KEY_ENTER))
 	{
 		std::cout << "Démarrage du jeu !" << std::endl;
 		sceneManager->ChangeScene(SPACE);
+	}*/
+
+	if (terminiActived)
+	{
+		termini.ProcessInput(&input);
+	}
+	else
+	{
+		if (input.IsKeyPressed(GLFW_KEY_W))
+		{
+			cam.ProcessPositionOffset(FORWARD, 0.01f);
+		}
+		if (input.IsKeyPressed(GLFW_KEY_A))
+		{
+			cam.ProcessPositionOffset(LEFT, 0.01f);
+		}
+		if (input.IsKeyPressed(GLFW_KEY_D))
+		{
+			cam.ProcessPositionOffset(RIGHT, 0.01f);
+		}
+		if (input.IsKeyPressed(GLFW_KEY_S))
+		{
+			cam.ProcessPositionOffset(BACKWARD, 0.01f);
+		}
+		if (input.IsKeyPressed(GLFW_KEY_SPACE))
+		{
+			cam.ProcessPositionOffset(UP, 0.01f);
+		}
+		if (input.IsKeyPressed(GLFW_KEY_LEFT_ALT))
+		{
+			cam.ProcessPositionOffset(DOWN, 0.01f);
+		}
+
+		if (input.IsKeyPressed(GLFW_KEY_E))
+		{
+			cam.ProcessRollOffset(-0.01f);
+		}
+		if (input.IsKeyPressed(GLFW_KEY_Q))
+		{
+			cam.ProcessRollOffset(0.01f);
+		}
 	}
 
-	if (input.IsKeyPressed(GLFW_KEY_W))
+	if (input.IsKeyPressed(GLFW_KEY_LEFT_CONTROL) && input.IsKeyPressed(GLFW_KEY_T))
 	{
-		cam.ProcessPositionOffset(FORWARD, 0.01f);
-	}
-	if (input.IsKeyPressed(GLFW_KEY_A))
-	{
-		cam.ProcessPositionOffset(LEFT, 0.01f);
-	}
-	if (input.IsKeyPressed(GLFW_KEY_D))
-	{
-		cam.ProcessPositionOffset(RIGHT, 0.01f);
-	}
-	if (input.IsKeyPressed(GLFW_KEY_S))
-	{
-		cam.ProcessPositionOffset(BACKWARD, 0.01f);
-	}
-	if (input.IsKeyPressed(GLFW_KEY_SPACE))
-	{
-		cam.ProcessPositionOffset(UP, 0.01f);
-	}
-	if (input.IsKeyPressed(GLFW_KEY_LEFT_ALT))
-	{
-		cam.ProcessPositionOffset(DOWN, 0.01f);
-	}
-
-	if (input.IsKeyPressed(GLFW_KEY_E))
-	{
-		cam.ProcessRollOffset(-0.01f);
-	}
-	if (input.IsKeyPressed(GLFW_KEY_Q))
-	{
-		cam.ProcessRollOffset(0.01f);
+		terminiActived = !terminiActived;
 	}
 
 	double x_off, y_off;
@@ -86,7 +99,10 @@ void SpaceScene::Render()
 	earth.Bind();
 	earth.Draw();
 	
-	termini.Draw();
+	if (terminiActived)
+	{
+		termini.Draw();
+	}
 }
 
 void SpaceScene::Destroy()

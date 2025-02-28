@@ -30,6 +30,8 @@ public:
 	void Destroy() override;
 
 private:
+	bool terminiActived;
+
 	SceneManager* sceneManager;
 
 	Camera cam = Camera();
