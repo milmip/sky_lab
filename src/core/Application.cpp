@@ -1,7 +1,8 @@
 #include "core/Application.hpp"
 
-Application::Application(const char* TITLE):
-title(TITLE), 
+Application::Application(const char* TITLE, const float FPS):
+title(TITLE),
+fps(FPS),
 window(nullptr), 
 lastFrameTime(0.0f) 
 {
@@ -28,6 +29,7 @@ void Application::Run()
 		render();
 
 		glfwPollEvents();
+		temporize();
 	}
 }
 
@@ -97,3 +99,8 @@ void Application::render()
 }
 
 
+void Application::temporize()
+{
+	float elapsed = glfwGetTime() - lastFrameTime;
+	std::this_thread::sleep_for(std::chrono::duration<double>(1/fps - elapsed));
+}

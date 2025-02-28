@@ -8,18 +8,20 @@
 #include "core/InputManager.hpp"
 
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 class Application
 {
 public:
-	Application(const char* TITLE);
+	Application(const char* TITLE, const float FPS);
 	~Application();
 
 	void Run();
 
 private:
 	int width, height;
-	float lastFrameTime;
+	float lastFrameTime, fps;
 	const char* title;
 
 	GLFWwindow* window;
@@ -31,6 +33,7 @@ private:
 	void processInput();
 	void update(float deltaTime);
 	void render();
+	void temporize();
 };
 
 #endif
