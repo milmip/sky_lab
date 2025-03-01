@@ -1,5 +1,24 @@
 #include "core/InputManager.hpp"
 
+void myKeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	std::cout << "key : " << key << " " << action << std::endl;
+}
+
+void myCharCallBack(GLFWwindow* window, unsigned int codepoint)
+{
+	InputManager* inputManager = static_cast<InputManager*>(glfwGetWindowUserPointer(window));
+	inputManager->ProcessChar(codepoint);
+}
+
+void InputManager::Init(GLFWwindow* window)
+{
+	glfwSetWindowUserPointer(window, this);
+
+	glfwSetKeyCallback(window, myKeyCallBack);
+	glfwSetCharCallback(window, myCharCallBack);
+}
+
 void InputManager::ProcessInput(GLFWwindow* window)
 {
 	for (int key = GLFW_KEY_SPACE; key <= GLFW_KEY_LAST; ++key)
@@ -50,4 +69,9 @@ void InputManager::GetMouseOffset(double* xOff, double* yOff) const
 		*xOff = mouseX_off;
 		*yOff = mouseY_off;
 	}
+}
+
+void InputManager::ProcessChar(unsigned int codepoint)
+{
+	std::cout << "charr : " << codepoint << std::endl;
 }

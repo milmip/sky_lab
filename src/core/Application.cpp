@@ -68,6 +68,8 @@ void Application::init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glViewport(0, 0, width, height);
+
+	inputManager.Init(window);
 	sceneManager.Init(width, height);
 	sceneManager.ChangeScene(MENU);
 }
