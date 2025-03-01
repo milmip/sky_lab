@@ -13,26 +13,34 @@ void myCharCallBack(GLFWwindow* window, unsigned int codepoint);
 class InputManager
 {
 public:
-	InputManager() = default;
-	~InputManager() = default;
+	InputManager();
+	~InputManager();
 	
-	static InputManager& GetInstance(){static InputManager instance;return instance;}
-
 	void Init(GLFWwindow* window);
-	void ProcessInput(GLFWwindow* window);
-	bool IsKeyPressed(int key) const;
+	/*void ProcessInput(GLFWwindow* window);
+	
 	bool IsMouseButtonPressed(int button) const;
 	void GetMousePosition(double& x, double& y) const;
 	void GetMouseOffset(double* xOff, double* yOff) const;
-
+	*/
+	bool IsKeyPressed(int key) const;
+	void ProcessKey(int key, bool upDown);
 	void ProcessChar(unsigned int codepoint);
+	void EmptyBufferChar();
+	void ReadBuffer();
 
 private:
-	double mouseX, mouseY;
-	double mouseX_off, mouseY_off;
+	int bufferIdx, bufferLenght;
+	unsigned int bufferChar[4];
 
 	std::unordered_map<int, bool> keyStates;
-	std::unordered_map<int, bool> mouseButtonStates;
+
+	bool isBufferEmpty();
+	/*double mouseX, mouseY;
+	double mouseX_off, mouseY_off;
+
+	
+	std::unordered_map<int, bool> mouseButtonStates;*/
 };
 
 #endif

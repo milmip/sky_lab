@@ -25,11 +25,13 @@ void Application::Run()
 		lastFrameTime = currentTime;
 
 		processInput();
-		update(deltaTime);
+		//update(deltaTime);
 		render();
 
-		glfwPollEvents();
 		temporize();
+		inputManager.EmptyBufferChar();
+		glfwPollEvents();
+		inputManager.ReadBuffer();
 	}
 }
 
@@ -82,7 +84,7 @@ void Application::processInput()
 	}
 	else
 	{
-		inputManager.ProcessInput(window);
+		//inputManager.ProcessInput(window);
 		sceneManager.ProcessInput(inputManager);
 	}
 }
