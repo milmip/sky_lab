@@ -2,7 +2,7 @@
 
 int main()
 {
-	Application app("Sky Lab", 10.0f);
+	Application app("Sky Lab", 60.0f);
 	app.Run();
 	return 0;
 }

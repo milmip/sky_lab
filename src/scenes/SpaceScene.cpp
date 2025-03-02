@@ -27,11 +27,11 @@ void SpaceScene::Init()
 
 void SpaceScene::ProcessInput(const InputManager& input)
 {
-	if (input.IsKeyPressed(GLFW_KEY_ENTER))
+	/*if (input.IsKeyPressed(GLFW_KEY_ENTER))
 	{
 		std::cout << "Démarrage du jeu !" << std::endl;
 		sceneManager->ChangeScene(SPACE);
-	}
+	}*/
 
 	if (input.IsKeyPressed(GLFW_KEY_W))
 	{
@@ -69,11 +69,11 @@ void SpaceScene::ProcessInput(const InputManager& input)
 
 	
 
-	/*double x_off, y_off;
-	input.GetMouseOffset(&x_off, &y_off);
+	double x_off, y_off;
+	input.GetCursorOffset(&x_off, &y_off);
 
 	cam.ProcessYawPitchOffset((float)atan(x_off * 0.001),
-							-(float)atan(y_off * 0.001));*/
+							 (float)atan(y_off * 0.001));
 	
 }
 

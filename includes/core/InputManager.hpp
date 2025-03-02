@@ -7,40 +7,42 @@
 #include <iostream>
 #include <unordered_map>
 
-void myKeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods);
-void myCharCallBack(GLFWwindow* window, unsigned int codepoint);
+void myKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void myCharCallback(GLFWwindow* window, unsigned int codepoint);
+void myCursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 
 class InputManager
 {
 public:
 	InputManager();
-	~InputManager();
+	~InputManager() = default;
 	
 	void Init(GLFWwindow* window);
-	/*void ProcessInput(GLFWwindow* window);
-	
-	bool IsMouseButtonPressed(int button) const;
-	void GetMousePosition(double& x, double& y) const;
-	void GetMouseOffset(double* xOff, double* yOff) const;
-	*/
+
 	bool IsKeyPressed(int key) const;
 	void ProcessKey(int key, bool upDown);
+
 	void ProcessChar(unsigned int codepoint);
 	void EmptyBufferChar();
 	void ReadBuffer();
 
+	void ProcessCursor(double x, double y);
+	void CalculateCursorOffset();
+	void GetCursorOffset(double* xOff, double* yOff) const;
+	//void GetMousePosition(double& x, double& y) const;
+
 private:
 	int bufferIdx, bufferLenght;
+	double newMouseX, oldMouseX, mouseXOff;
+	double newMouseY, oldMouseY, mouseYOff;
+
 	unsigned int bufferChar[4];
+
 
 	std::unordered_map<int, bool> keyStates;
 
 	bool isBufferEmpty();
-	/*double mouseX, mouseY;
-	double mouseX_off, mouseY_off;
-
 	
-	std::unordered_map<int, bool> mouseButtonStates;*/
 };
 
 #endif

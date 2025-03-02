@@ -31,7 +31,7 @@ void Application::Run()
 		temporize();
 		inputManager.EmptyBufferChar();
 		glfwPollEvents();
-		inputManager.ReadBuffer();
+		inputManager.CalculateCursorOffset();
 	}
 }
 
@@ -84,7 +84,6 @@ void Application::processInput()
 	}
 	else
 	{
-		//inputManager.ProcessInput(window);
 		sceneManager.ProcessInput(inputManager);
 	}
 }

@@ -1,16 +1,48 @@
 #include "core/InputManager.hpp"
 
-void myKeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods)
+void myKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	//std::cout << "key : " << key << " " << action << std::endl;
+	
 	InputManager* inputManager = static_cast<InputManager*>(glfwGetWindowUserPointer(window));
-	inputManager->ProcessKey(key, static_cast<bool>(action));
+	if (action != 2)
+	{
+		inputManager->ProcessKey(key, static_cast<bool>(action));
+
+		unsigned int c(0);
+		switch (key)
+		{
+		case GLFW_KEY_LEFT_CONTROL:
+		case GLFW_KEY_T:
+			c = 20 * static_cast<unsigned int>
+								(inputManager->IsKeyPressed(GLFW_KEY_LEFT_CONTROL) & inputManager->IsKeyPressed(GLFW_KEY_T));
+			inputManager->ProcessChar(c);
+			break;
+
+		case GLFW_KEY_BACKSPACE:
+			c = 8 * static_cast<unsigned int>
+								(inputManager->IsKeyPressed(GLFW_KEY_BACKSPACE));
+			inputManager->ProcessChar(c);
+			break;
+
+		case GLFW_KEY_ENTER:
+			c = 10 * static_cast<unsigned int>
+								(inputManager->IsKeyPressed(GLFW_KEY_ENTER));
+			inputManager->ProcessChar(c);
+			break;
+		}
+	}
 }
 
-void myCharCallBack(GLFWwindow* window, unsigned int codepoint)
+void myCharCallback(GLFWwindow* window, unsigned int codepoint)
 {
 	InputManager* inputManager = static_cast<InputManager*>(glfwGetWindowUserPointer(window));
 	inputManager->ProcessChar(codepoint);
+}
+
+void myCursorPosCallback(GLFWwindow* window, double xpos, double ypos)
+{
+	InputManager* inputManager = static_cast<InputManager*>(glfwGetWindowUserPointer(window));
+	inputManager->ProcessCursor(xpos, ypos);
 }
 
 InputManager::InputManager():
@@ -19,78 +51,32 @@ bufferIdx(0),
 bufferLenght(4)
 {}
 
-InputManager::~InputManager()
-{
-	
-}
-
 void InputManager::Init(GLFWwindow* window)
 {
 	glfwSetWindowUserPointer(window, this);
 
-	glfwSetKeyCallback(window, myKeyCallBack);
-	glfwSetCharCallback(window, myCharCallBack);
+	glfwSetKeyCallback(window, myKeyCallback);
+	glfwSetCharCallback(window, myCharCallback);
+	glfwSetCursorPosCallback(window, myCursorPosCallback);
 
 	for (int key = GLFW_KEY_SPACE; key <= GLFW_KEY_LAST; ++key)
 	{
 		keyStates[key] = false;
 	}
 }
-
-/*void InputManager::ProcessInput(GLFWwindow* window)
-{
-	for (int key = GLFW_KEY_SPACE; key <= GLFW_KEY_LAST; ++key)
-	{
-		keyStates[key] = (glfwGetKey(window, key) == GLFW_PRESS);
-	}
-
-	for (int button = GLFW_MOUSE_BUTTON_1; button <= GLFW_MOUSE_BUTTON_LAST; ++button)
-	{
-		mouseButtonStates[button] = (glfwGetMouseButton(window, button) == GLFW_PRESS);
-	}
-	double ante_x = mouseX;
-	double ante_y = mouseY;
-
-	glfwGetCursorPos(window, &mouseX, &mouseY);
-
-	mouseX_off = mouseX - ante_x;
-	mouseY_off = mouseY - ante_y;
-}
-
-
-
-bool InputManager::IsMouseButtonPressed(int button) const
-{
-	auto it = mouseButtonStates.find(button);
-	return it != mouseButtonStates.end() && it->second;
-}
+/*
 
 void InputManager::GetMousePosition(double& x, double& y) const
 {
 	x = mouseX;
 	y = mouseY;
-}
+}*/
 
-void InputManager::GetMouseOffset(double* xOff, double* yOff) const
-{
-	if (mouseX_off > 100 || mouseY_off > 100)
-	{
-		*xOff = 0.0;
-		*yOff = 0.0;
-	}
-	else
-	{
-		*xOff = mouseX_off;
-		*yOff = mouseY_off;
-	}
-}
-*/
 bool InputManager::IsKeyPressed(int key) const
 {
 	auto it = keyStates.find(key);
 	return it != keyStates.end() && it->second;
 }
-
 
 void InputManager::ProcessKey(int key, bool upDown)
 {
@@ -99,8 +85,6 @@ void InputManager::ProcessKey(int key, bool upDown)
 
 void InputManager::ProcessChar(unsigned int codepoint)
 {
-	std::cout << "charr : " << codepoint << std::endl;
-
 	if (bufferIdx < bufferLenght)
 	{
 		bufferChar[bufferIdx] = codepoint;
@@ -122,6 +106,35 @@ void InputManager::ReadBuffer()
 	if(!isBufferEmpty())
 	{
 		std::cout << bufferChar[0] << " " << bufferChar[1] << " " << bufferChar[2] << " " << bufferChar[3] << std::endl;
+	}
+}
+
+void InputManager::ProcessCursor(double x, double y)
+{
+	newMouseX = x;
+	newMouseY = y;
+}
+
+void InputManager::CalculateCursorOffset()
+{
+	mouseXOff = newMouseX - oldMouseX;
+	mouseYOff = oldMouseY - newMouseY;
+
+	oldMouseX = newMouseX;
+	oldMouseY = newMouseY;
+}
+
+void InputManager::GetCursorOffset(double* xOff, double* yOff) const
+{
+	if (mouseXOff > 600 || mouseYOff > 600)
+	{
+		*xOff = 0.0;
+		*yOff = 0.0;
+	}
+	else
+	{
+		*xOff = mouseXOff;
+		*yOff = mouseYOff;
 	}
 }
 
