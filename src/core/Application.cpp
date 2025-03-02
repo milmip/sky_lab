@@ -1,7 +1,8 @@
 #include "core/Application.hpp"
 
-Application::Application(const char* TITLE):
-title(TITLE), 
+Application::Application(const char* TITLE, const float FPS):
+title(TITLE),
+fps(FPS),
 window(nullptr), 
 lastFrameTime(0.0f) 
 {
@@ -24,10 +25,13 @@ void Application::Run()
 		lastFrameTime = currentTime;
 
 		processInput();
-		update(deltaTime);
+		//update(deltaTime);
 		render();
 
+		temporize();
+		inputManager.EmptyBufferChar();
 		glfwPollEvents();
+		inputManager.CalculateCursorOffset();
 	}
 }
 
@@ -66,6 +70,8 @@ void Application::init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glViewport(0, 0, width, height);
+
+	inputManager.Init(window);
 	sceneManager.Init(width, height);
 	sceneManager.ChangeScene(MENU);
 }
@@ -78,7 +84,6 @@ void Application::processInput()
 	}
 	else
 	{
-		inputManager.ProcessInput(window);
 		sceneManager.ProcessInput(inputManager);
 	}
 }
@@ -97,3 +102,8 @@ void Application::render()
 }
 
 
+void Application::temporize()
+{
+	float elapsed = glfwGetTime() - lastFrameTime;
+	std::this_thread::sleep_for(std::chrono::duration<double>(1/fps - elapsed));
+}

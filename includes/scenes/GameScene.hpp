@@ -20,11 +20,11 @@ public:
 
 	void ProcessInput(const InputManager& input) override
 	{
-		if (input.IsKeyPressed(GLFW_KEY_LEFT))
+		/*if (input.IsKeyPressed(GLFW_KEY_LEFT))
 		{
 			std::cout << "Retour au menu !" << std::endl;
 			sceneManager->ChangeScene(MENU);
-		}
+		}*/
 	}
 
 	void Update(float deltaTime) override 

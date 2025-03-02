@@ -80,11 +80,13 @@ void SpaceScene::ProcessInput(const InputManager& input)
 		terminiActived = !terminiActived;
 	}
 
+	
+
 	double x_off, y_off;
-	input.GetMouseOffset(&x_off, &y_off);
+	input.GetCursorOffset(&x_off, &y_off);
 
 	cam.ProcessYawPitchOffset((float)atan(x_off * 0.001),
-							-(float)atan(y_off * 0.001));
+							 (float)atan(y_off * 0.001));
 	
 }
 
