@@ -6,6 +6,7 @@ void myKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mo
 	InputManager* inputManager = static_cast<InputManager*>(glfwGetWindowUserPointer(window));
 	if (action != 2)
 	{
+
 		inputManager->ProcessKey(key, static_cast<bool>(action));
 
 		unsigned int c(0);
@@ -13,21 +14,21 @@ void myKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mo
 		{
 		case GLFW_KEY_LEFT_CONTROL:
 		case GLFW_KEY_T:
-			c = 20 * static_cast<unsigned int>
+			c = UTF_CTRL_T * static_cast<unsigned int>
 								(inputManager->IsKeyPressed(GLFW_KEY_LEFT_CONTROL) & inputManager->IsKeyPressed(GLFW_KEY_T));
-			inputManager->ProcessChar(c);
+			inputManager->SetInvisibleChar(c);
 			break;
 
 		case GLFW_KEY_BACKSPACE:
-			c = 8 * static_cast<unsigned int>
+			c = UTF_SUPP * static_cast<unsigned int>
 								(inputManager->IsKeyPressed(GLFW_KEY_BACKSPACE));
-			inputManager->ProcessChar(c);
+			inputManager->SetInvisibleChar(c);
 			break;
 
 		case GLFW_KEY_ENTER:
-			c = 10 * static_cast<unsigned int>
+			c = UTF_ENTER * static_cast<unsigned int>
 								(inputManager->IsKeyPressed(GLFW_KEY_ENTER));
-			inputManager->ProcessChar(c);
+			inputManager->SetInvisibleChar(c);
 			break;
 		}
 	}
@@ -36,7 +37,7 @@ void myKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mo
 void myCharCallback(GLFWwindow* window, unsigned int codepoint)
 {
 	InputManager* inputManager = static_cast<InputManager*>(glfwGetWindowUserPointer(window));
-	inputManager->ProcessChar(codepoint);
+	inputManager->SetVisibleChar(codepoint);
 }
 
 void myCursorPosCallback(GLFWwindow* window, double xpos, double ypos)
@@ -45,11 +46,6 @@ void myCursorPosCallback(GLFWwindow* window, double xpos, double ypos)
 	inputManager->ProcessCursor(xpos, ypos);
 }
 
-InputManager::InputManager():
-bufferChar{0,0,0,0},
-bufferIdx(0),
-bufferLenght(4)
-{}
 
 void InputManager::Init(GLFWwindow* window)
 {
@@ -83,32 +79,6 @@ void InputManager::ProcessKey(int key, bool upDown)
 	keyStates[key] = upDown;
 }
 
-void InputManager::ProcessChar(unsigned int codepoint)
-{
-	if (bufferIdx < bufferLenght)
-	{
-		bufferChar[bufferIdx] = codepoint;
-		bufferIdx += 1;
-	}
-}
-
-void InputManager::EmptyBufferChar()
-{
-	for (int i = 0; i < bufferLenght; ++i)
-	{
-		bufferChar[i] = 0;
-	}
-	bufferIdx = 0;
-}
-
-void InputManager::ReadBuffer()
-{
-	if(!isBufferEmpty())
-	{
-		std::cout << bufferChar[0] << " " << bufferChar[1] << " " << bufferChar[2] << " " << bufferChar[3] << std::endl;
-	}
-}
-
 void InputManager::ProcessCursor(double x, double y)
 {
 	newMouseX = x;
@@ -136,16 +106,4 @@ void InputManager::GetCursorOffset(double* xOff, double* yOff) const
 		*xOff = mouseXOff;
 		*yOff = mouseYOff;
 	}
-}
-
-bool InputManager::isBufferEmpty()
-{
-	bool res = false;
-
-	for (int i = 0; i < bufferLenght; ++i)
-	{
-		res |= static_cast<bool>(bufferChar[i]);
-	}
-
-	return !res;
 }

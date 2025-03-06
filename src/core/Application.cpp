@@ -20,18 +20,10 @@ void Application::Run()
 {
 	while (!glfwWindowShouldClose(window))
 	{
-		float currentTime = glfwGetTime();
-		float deltaTime = currentTime - lastFrameTime;
-		lastFrameTime = currentTime;
-
 		processInput();
 		//update(deltaTime);
 		render();
-
 		temporize();
-		inputManager.EmptyBufferChar();
-		glfwPollEvents();
-		inputManager.CalculateCursorOffset();
 	}
 }
 
@@ -78,7 +70,12 @@ void Application::init()
 
 void Application::processInput()
 {
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	inputManager.SetVisibleChar(0);
+	inputManager.SetInvisibleChar(0);
+	glfwPollEvents();
+	inputManager.CalculateCursorOffset();
+
+	if (inputManager.IsKeyPressed(GLFW_KEY_ESCAPE))
 	{
 		glfwSetWindowShouldClose(window, true);
 	}
@@ -106,4 +103,8 @@ void Application::temporize()
 {
 	float elapsed = glfwGetTime() - lastFrameTime;
 	std::this_thread::sleep_for(std::chrono::duration<double>(1/fps - elapsed));
+
+	float currentTime = glfwGetTime();
+	float deltaTime = currentTime - lastFrameTime;
+	lastFrameTime = currentTime;
 }

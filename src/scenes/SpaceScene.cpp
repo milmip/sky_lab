@@ -87,6 +87,15 @@ void SpaceScene::ProcessInput(const InputManager& input)
 
 	cam.ProcessYawPitchOffset((float)atan(x_off * 0.001),
 							 (float)atan(y_off * 0.001));
+
+	//unsigned int buffer = input.DrainBuffer();
+
+	/*if (buffer != 0)
+	{
+		termini.UpdateBuffer(buffer);
+		std::cout << buffer << std::endl;
+	}*/
+
 	
 }
 

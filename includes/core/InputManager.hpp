@@ -7,6 +7,13 @@
 #include <iostream>
 #include <unordered_map>
 
+enum UTF_CODE
+{
+	UTF_CTRL_T = 20,
+	UTF_ENTER = 10,
+	UTF_SUPP = 8
+};
+
 void myKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void myCharCallback(GLFWwindow* window, unsigned int codepoint);
 void myCursorPosCallback(GLFWwindow* window, double xpos, double ypos);
@@ -14,7 +21,7 @@ void myCursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 class InputManager
 {
 public:
-	InputManager();
+	InputManager() = default;
 	~InputManager() = default;
 	
 	void Init(GLFWwindow* window);
@@ -22,9 +29,10 @@ public:
 	bool IsKeyPressed(int key) const;
 	void ProcessKey(int key, bool upDown);
 
-	void ProcessChar(unsigned int codepoint);
-	void EmptyBufferChar();
-	void ReadBuffer();
+	void SetVisibleChar(unsigned int c){visibleChar = c;}
+	void SetInvisibleChar(unsigned int c){invisibleChar = c;}
+	unsigned int GetVisibleChar(){return visibleChar;}
+	unsigned int GetInvisibleChar(){return invisibleChar;}
 
 	void ProcessCursor(double x, double y);
 	void CalculateCursorOffset();
@@ -32,17 +40,13 @@ public:
 	//void GetMousePosition(double& x, double& y) const;
 
 private:
-	int bufferIdx, bufferLenght;
 	double newMouseX, oldMouseX, mouseXOff;
 	double newMouseY, oldMouseY, mouseYOff;
 
-	unsigned int bufferChar[4];
+	unsigned int visibleChar, invisibleChar;
 
 
 	std::unordered_map<int, bool> keyStates;
-
-	bool isBufferEmpty();
-	
 };
 
 #endif
