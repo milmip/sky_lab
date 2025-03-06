@@ -18,7 +18,7 @@ public:
 		std::cout << "GameScene initialisée !" << std::endl;
 	}
 
-	void ProcessInput(const InputManager& input) override
+	void ProcessInput(InputManager& input) override
 	{
 		/*if (input.IsKeyPressed(GLFW_KEY_LEFT))
 		{

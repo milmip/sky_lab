@@ -32,10 +32,11 @@ public:
 
 	void Init(unsigned int shad, const char* font_path, unsigned int width, unsigned int height);
 	void Draw();
-	void ProcessInput(const InputManager* input);
+	void ProcessInput(InputManager* input);
 
 private:
 	unsigned int vao, vbo, shader, scr_width, scr_height;
+	std::string text;
 	std::map<GLchar, Character> characters;
 
 	glm::mat4 glyphProjMatrix;

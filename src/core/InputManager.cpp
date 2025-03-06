@@ -17,6 +17,10 @@ void myKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mo
 			c = UTF_CTRL_T * static_cast<unsigned int>
 								(inputManager->IsKeyPressed(GLFW_KEY_LEFT_CONTROL) & inputManager->IsKeyPressed(GLFW_KEY_T));
 			inputManager->SetInvisibleChar(c);
+			/*if (c != 0)
+			{
+				std::cout << c << std::endl;
+			}*/
 			break;
 
 		case GLFW_KEY_BACKSPACE:

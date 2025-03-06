@@ -82,7 +82,7 @@ void Termini::Init(unsigned int shad, const char* font_path, unsigned int width,
 
 void Termini::Draw()
 {
-	renderText("This is sample text", 25.0f, 250.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+	renderText(text, 25.0f, 250.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
 
 	updateBackgroundMatrix(1200, 800);
 	backgroundShader.Use();
@@ -91,8 +91,26 @@ void Termini::Draw()
 	background.Draw();
 }
 
-void Termini::ProcessInput(const InputManager* input)
+void Termini::ProcessInput(InputManager* input)
 {
+	unsigned int vc = input->GetVisibleChar();
+	unsigned int ivc = input->GetInvisibleChar();
+	if (vc)
+	{
+		text.append(1, static_cast<char>(vc));
+		//std::cout << text << std::endl;
+	}
+	if (ivc)
+	{
+		if (ivc == UTF_SUPP)
+		{
+			if (!text.empty())
+			{
+				text.erase(text.size() - 1, 1);
+			}
+		}
+	}
+
 
 }
 

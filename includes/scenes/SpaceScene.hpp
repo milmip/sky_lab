@@ -14,6 +14,8 @@
 #include "graphics/Shader.hpp"
 #include "graphics/Light.hpp"
 
+#include "enums/utf8.hpp"
+
 #include <iostream>
 #include <cmath>
 
@@ -24,7 +26,7 @@ public:
 	~SpaceScene() = default;
 
 	void Init() override;
-	void ProcessInput(const InputManager& input) override;
+	void ProcessInput(InputManager& input) override;
 	void Update(float deltaTime) override;
 	void Render() override;
 	void Destroy() override;

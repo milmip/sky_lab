@@ -26,7 +26,7 @@ void SpaceScene::Init()
 	earth.Init(simple_shader.ID, n_texts, texts_loc);
 }
 
-void SpaceScene::ProcessInput(const InputManager& input)
+void SpaceScene::ProcessInput(InputManager& input)
 {
 	/*if (input.IsKeyPressed(GLFW_KEY_ENTER))
 	{
@@ -75,7 +75,7 @@ void SpaceScene::ProcessInput(const InputManager& input)
 		}
 	}
 
-	if (input.IsKeyPressed(GLFW_KEY_LEFT_CONTROL) && input.IsKeyPressed(GLFW_KEY_T))
+	if (input.GetInvisibleChar() == UTF_CTRL_T)
 	{
 		terminiActived = !terminiActived;
 	}

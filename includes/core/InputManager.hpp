@@ -4,15 +4,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include "enums/utf8.hpp"
+
 #include <iostream>
 #include <unordered_map>
-
-enum UTF_CODE
-{
-	UTF_CTRL_T = 20,
-	UTF_ENTER = 10,
-	UTF_SUPP = 8
-};
 
 void myKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void myCharCallback(GLFWwindow* window, unsigned int codepoint);

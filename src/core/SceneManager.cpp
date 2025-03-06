@@ -30,7 +30,7 @@ void SceneManager::ChangeScene(ScenesName name)
 	}
 }
 
-void SceneManager::ProcessInput(const InputManager& input)
+void SceneManager::ProcessInput(InputManager& input)
 {
 	if (currentScene)
 	{

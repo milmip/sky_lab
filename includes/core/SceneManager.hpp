@@ -24,7 +24,7 @@ public:
 
 	void Init(int w, int h);
 	void ChangeScene(ScenesName name);
-	void ProcessInput(const InputManager& input);
+	void ProcessInput(InputManager& input);
 	void Update(float deltaTime);
 	void Render();
 	void Destroy();
