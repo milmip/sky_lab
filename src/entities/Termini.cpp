@@ -1,16 +1,25 @@
 #include "entities/Termini.hpp"
 
-void Termini::Init(unsigned int shad, const char* font_path, unsigned int width, unsigned int height)
+void Termini::Init(unsigned int SHAD, const char* font_path,
+				   unsigned int WIDTH, unsigned int HEIGHT,
+				   unsigned int COL, unsigned int ROW)
 {
-	scr_width = width;
-	scr_height = height;
+	scr_width = WIDTH;
+	scr_height = HEIGHT;
+	col = COL;
+	row = ROW;
 
-	shader = shad;
+	scale = 0.5f;
+
+	shader = SHAD;
+
+	int bearingMaxUp = 0;
+	int bearingMaxDown = 0;
 
 	backgroundShader.Init("shaders/terminiGroundVert.glsl", "shaders/terminiGroundFrag.glsl");
 	background.Init(backgroundShader.ID, 0, NULL);
 
-	glyphProjMatrix = glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f);
+	glyphProjMatrix = glm::ortho(0.0f, static_cast<float>(scr_width), static_cast<float>(scr_height), 0.0f);
 
 	glUseProgram(shader);
 	Shader::setMat4(shader, "projection", &glyphProjMatrix);
@@ -62,9 +71,22 @@ void Termini::Init(unsigned int shad, const char* font_path, unsigned int width,
 								   glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
 								   static_cast<unsigned int>(face->glyph->advance.x)};
 			characters.insert(std::pair<char, Character>(c, character));
+
+			if (face->glyph->bitmap_top > bearingMaxUp)
+			{
+				bearingMaxUp = face->glyph->bitmap_top;
+			}
+			int dif = static_cast<int>(face->glyph->bitmap.rows) - static_cast<int>(face->glyph->bitmap_top);
+			if (dif > bearingMaxDown)
+			{
+				bearingMaxDown = dif;
+			}
 		}
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
+
+	tileH = static_cast<unsigned int>(bearingMaxUp + bearingMaxDown);
+	tileW = static_cast<unsigned int>((characters['a'].Advance >> 6));
 
 	FT_Done_Face(face);
 	FT_Done_FreeType(ft);
@@ -82,9 +104,11 @@ void Termini::Init(unsigned int shad, const char* font_path, unsigned int width,
 
 void Termini::Draw()
 {
-	renderText(text, 25.0f, 250.0f, 0.5f, glm::vec3(1.0f, 1.0f, 1.0f));
+	renderText(preprompt, 0.0f, 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+	renderText(prompt, tileW * scale, 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+	renderText(cursor, (prompt.size() + preprompt.size()) * tileW * scale, 0.0f, glm::vec3(1.0f, 1.0f, 1.0f));
 
-	updateBackgroundMatrix(1200, 800);
+	updateBackgroundMatrix(col * tileW * scale, row * tileH * scale);
 	backgroundShader.Use();
 	Shader::setMat3(backgroundShader.ID, "upInTheCorner", &upInTheCorner);
 	background.Bind();
@@ -95,18 +119,17 @@ void Termini::ProcessInput(InputManager* input)
 {
 	unsigned int vc = input->GetVisibleChar();
 	unsigned int ivc = input->GetInvisibleChar();
-	if (vc)
+	if (vc && (preprompt.size() + prompt.size() + cursor.size()) < col)
 	{
-		text.append(1, static_cast<char>(vc));
-		//std::cout << text << std::endl;
+		prompt.append(1, static_cast<char>(vc));
 	}
 	if (ivc)
 	{
 		if (ivc == UTF_SUPP)
 		{
-			if (!text.empty())
+			if (!prompt.empty())
 			{
-				text.erase(text.size() - 1, 1);
+				prompt.erase(prompt.size() - 1, 1);
 			}
 		}
 	}
@@ -114,10 +137,11 @@ void Termini::ProcessInput(InputManager* input)
 
 }
 
-void Termini::renderText(std::string text, float x, float y, float scale, glm::vec3 color)
+void Termini::renderText(std::string text, float x, float y, glm::vec3 color)
 {
 	glUseProgram(shader);
 	Shader::setVec3(shader, "textColor", &color);
+	y += tileH * scale;
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(vao);

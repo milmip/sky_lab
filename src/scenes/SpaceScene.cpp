@@ -17,7 +17,8 @@ void SpaceScene::Init()
 	glyphShader.Init("shaders/glyphVert.glsl", "shaders/glyphFrag.glsl");
 	termini.Init(glyphShader.ID,
 				 "/usr/share/fonts/truetype/downloaded/Consolas.ttf",
-				 sceneManager->scr_width, sceneManager->scr_height);
+				 sceneManager->scr_width, sceneManager->scr_height,
+				 20, 10);
 
 	//Earth
 	simple_shader.Init("shaders/vert1.glsl", "shaders/frag1.glsl");
