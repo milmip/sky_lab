@@ -4,37 +4,36 @@ void myKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mo
 {
 	
 	InputManager* inputManager = static_cast<InputManager*>(glfwGetWindowUserPointer(window));
-	if (action != 2)
+
+	inputManager->ProcessKey(key, static_cast<bool>(action));
+
+	unsigned int c(0);
+	switch (key)
 	{
-
-		inputManager->ProcessKey(key, static_cast<bool>(action));
-
-		unsigned int c(0);
-		switch (key)
+	case GLFW_KEY_LEFT_CONTROL:
+	case GLFW_KEY_T:
+		if (action != 2)
 		{
-		case GLFW_KEY_LEFT_CONTROL:
-		case GLFW_KEY_T:
 			c = UTF_CTRL_T * static_cast<unsigned int>
 								(inputManager->IsKeyPressed(GLFW_KEY_LEFT_CONTROL) & inputManager->IsKeyPressed(GLFW_KEY_T));
 			inputManager->SetInvisibleChar(c);
-			/*if (c != 0)
-			{
-				std::cout << c << std::endl;
-			}*/
-			break;
+		}
+		break;
 
-		case GLFW_KEY_BACKSPACE:
-			c = UTF_SUPP * static_cast<unsigned int>
-								(inputManager->IsKeyPressed(GLFW_KEY_BACKSPACE));
-			inputManager->SetInvisibleChar(c);
-			break;
+	case GLFW_KEY_BACKSPACE:
+		c = UTF_SUPP * static_cast<unsigned int>
+							(inputManager->IsKeyPressed(GLFW_KEY_BACKSPACE));
+		inputManager->SetInvisibleChar(c);
+		break;
 
-		case GLFW_KEY_ENTER:
+	case GLFW_KEY_ENTER:
+		if (action != 2)
+		{
 			c = UTF_ENTER * static_cast<unsigned int>
 								(inputManager->IsKeyPressed(GLFW_KEY_ENTER));
 			inputManager->SetInvisibleChar(c);
-			break;
 		}
+		break;
 	}
 }
 
