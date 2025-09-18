@@ -11,7 +11,7 @@ Implementing the first stable version.
 Contact me
 
 Emilien Progin  
-[email](mailto:emilien.progin@gmail.com?)
+[email](mailto:emilien.progin@etik.com?)
 
 ## Version History
 
